@@ -1,6 +1,6 @@
 import { storageManager } from './storage';
 
-const API_BASE_URL = import.meta.env.DEV ? '/api' : 'https://localhost:7117/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 interface ApiConfig extends RequestInit {
   requiresAuth?: boolean;
