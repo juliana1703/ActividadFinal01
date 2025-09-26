@@ -102,7 +102,7 @@ async login(credentials: LoginRequest): Promise<LoginResponse> {
 }
 
 async register(userData: any) {
-  return this.makeRequest('/Authentication/register', {
+  return this.makeRequest('/Authentication/registro', {
     method: 'POST',
     body: JSON.stringify(userData),
     requiresAuth: false,
