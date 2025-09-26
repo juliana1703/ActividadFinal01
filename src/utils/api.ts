@@ -3,8 +3,8 @@ import { storageManager } from './storage';
 import { User } from '../types/auth';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL
-  ? 'https://webapiml-arbcaaddavayhpct.canadacentral-01.azurewebsites.net/api'
-  : 'https://webapiml-arbcaaddavayhpct.canadacentral-01.azurewebsites.net/api';
+  ? 'https://lab05webapiml20-amhucufsctatapgu.canadacentral-01.azurewebsites.net/api'
+  : 'https://lab05webapiml20-amhucufsctatapgu.canadacentral-01.azurewebsites.net/api';
 
 interface ApiConfig extends RequestInit {
   requiresAuth?: boolean;
@@ -102,12 +102,14 @@ async login(credentials: LoginRequest): Promise<LoginResponse> {
 }
 
 async register(userData: any) {
-  return this.makeRequest('/Authentication/registro', {
+  return this.makeRequest('/Authentication/register', {
     method: 'POST',
     body: JSON.stringify(userData),
     requiresAuth: false,
   });
 }
+
+
 
 async resetPassword(email: string) {
   return this.makeRequest('/Authentication/forgot-password', {   

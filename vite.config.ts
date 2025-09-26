@@ -12,7 +12,7 @@ export default defineConfig({
     host: true,
     proxy: {
       '/api': {
-        target: 'https://webapiml-arbcaaddavayhpct.canadacentral-01.azurewebsites.net/api',
+        target: 'https://lab05webapiml20-amhucufsctatapgu.canadacentral-01.azurewebsites.net',
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path,
