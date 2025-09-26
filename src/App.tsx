@@ -12,8 +12,10 @@ import ProfileManagement from './components/profile/ProfileManagement';
 
 const App: React.FC = () => {
   return (
-    <AuthProvider>
+    
       <Router>
+        <AuthProvider>
+      
         <Routes>
           {/* Public Routes */}
           <Route path="/login" element={<LoginForm />} />
@@ -159,8 +161,9 @@ const App: React.FC = () => {
           {/* Default redirect */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
         </Routes>
+        </AuthProvider>
       </Router>
-    </AuthProvider>
+    
   );
 };
 

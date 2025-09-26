@@ -1,6 +1,10 @@
+import { LoginRequest, LoginResponse } from '../types/auth';
 import { storageManager } from './storage';
+import { User } from '../types/auth';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL;
+const API_BASE_URL = import.meta.env.VITE_API_URL
+  ? 'https://webapiml-arbcaaddavayhpct.canadacentral-01.azurewebsites.net/api'
+  : 'https://webapiml-arbcaaddavayhpct.canadacentral-01.azurewebsites.net/api';
 
 interface ApiConfig extends RequestInit {
   requiresAuth?: boolean;
@@ -16,7 +20,7 @@ class ApiClient {
     const url = `${API_BASE_URL}${endpoint}`;
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      'accept': 'text/plain',
+      'accept': 'application/json',
       ...((fetchConfig.headers as Record<string, string>) || {})
     };
 
@@ -89,56 +93,47 @@ class ApiClient {
     }
   }
 
-  // Authentication endpoints
-  async login(credentials: any) {
-    return this.makeRequest('/Authentication/login', {
-      method: 'POST',
-      body: JSON.stringify(credentials),
-      requiresAuth: false,
-    });
-  }
+async login(credentials: LoginRequest): Promise<LoginResponse> {
+  return this.makeRequest<LoginResponse>('/Authentication/login', {
+    method: 'POST',
+    body: JSON.stringify(credentials),
+    requiresAuth: false,
+  });
+}
 
-  async register(userData: any) {
-    return this.makeRequest('/Authentication/register', {
-      method: 'POST',
-      body: JSON.stringify(userData),
-      requiresAuth: false,
-    });
-  }
+async register(userData: any) {
+  return this.makeRequest('/Authentication/register', {
+    method: 'POST',
+    body: JSON.stringify(userData),
+    requiresAuth: false,
+  });
+}
 
-  async resetPassword(email: string) {
-    return this.makeRequest('/Authentication/forgot-password', {
-      method: 'POST',
-      body: JSON.stringify({ email }),
-      requiresAuth: false,
-    });
-  }
+async resetPassword(email: string) {
+  return this.makeRequest('/Authentication/forgot-password', {   
+    method: 'POST',
+    body: JSON.stringify({ email }),
+    requiresAuth: false,
+  });
+}
 
-  async changePassword(passwordData: any) {
-    console.log('API: Enviando petición de cambio de contraseña a:', '/Authentication/change-password');
-    console.log('API: Datos enviados (estructura):', {
-      hasCurrentPassword: !!passwordData.currentPassword,
-      hasNewPassword: !!passwordData.newPassword,
-      hasConfirmPassword: !!passwordData.confirmPassword,
-      keys: Object.keys(passwordData)
-    });
+async changePassword(passwordData: any) {
+  return this.makeRequest('/Authentication/change-password', {   
+    method: 'POST',
+    body: JSON.stringify(passwordData),
+  });
+}
 
-    return this.makeRequest('/Authentication/change-password', {
-      method: 'POST',
-      body: JSON.stringify(passwordData),
-    });
-  }
+async getUserProfile() {
+  return this.makeRequest('/Authentication/profile');   
+}
 
-  async getUserProfile() {
-    return this.makeRequest('/Authentication/profile');
-  }
-
-  async updateProfile(userData: any) {
-    return this.makeRequest('/Authentication/profile', {
-      method: 'PUT',
-      body: JSON.stringify(userData),
-    });
-  }
+async updateProfile(userData: Partial<User>): Promise<User> {
+  return this.makeRequest<User>('/Authentication/profile', {  
+    method: 'PUT',
+    body: JSON.stringify(userData),
+  });
+}
 
   // Generic CRUD operations
   async get<T>(endpoint: string): Promise<T> {
